@@ -1,5 +1,8 @@
 import React, { FunctionComponent } from 'react'
-import { Box, Color, Text, useInput } from 'ink'
+import { useInput } from 'ink'
+import { AppProvider } from './AppContext'
+import Footer from './components/Footer'
+import Header from './components/Header'
 
 interface IProps {
   name?: string
@@ -12,16 +15,10 @@ const InkBoilerplate: FunctionComponent<IProps> = ({ name = 'Someone' }) => {
   })
 
   return (
-    <>
-      <Box>
-        <Text>
-          Hello, {name}. <Color green>From Ink Boilerplate></Color>
-        </Text>
-      </Box>
-      <Box marginTop={1}>
-        <Color redBright>Press 'q' for exit</Color>
-      </Box>
-    </>
+    <AppProvider>
+      <Header />
+      <Footer />
+    </AppProvider>
   )
 }
 
