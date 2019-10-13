@@ -2,11 +2,11 @@ import React, { createContext, useReducer, FunctionComponent } from 'react'
 
 type DATE_RANGE = 'daily' | 'weekly' | 'monthly'
 type ACTION =
-  | { type: 'SET_QUERY'; payload: string }
   | { type: 'SET_ACTIVE_PAGE'; payload: string }
   | { type: 'SET_LANGUAGE'; payload: string }
   | { type: 'SET_LANGUAGES'; payload: Choice[] }
   | { type: 'SET_DATE_RANGE'; payload: DATE_RANGE }
+  | { type: 'FILTER_LANGUAGE'; payload: string }
 
 interface Choice {
   label: string
@@ -19,6 +19,7 @@ interface AppState {
   dateRange?: DATE_RANGE
   language?: string
   listLanguages?: Choice[]
+  filteredLanguages?: Choice[]
 }
 
 let initialAppState: AppState = {
@@ -27,6 +28,7 @@ let initialAppState: AppState = {
   language: '',
   dateRange: 'daily',
   listLanguages: [],
+  filteredLanguages: [],
 }
 
 const AppContext = createContext<
@@ -42,16 +44,28 @@ const { Consumer, Provider } = AppContext
 
 const appReducer = (state: AppState, action: ACTION) => {
   switch (action.type) {
-    case 'SET_QUERY':
-      return { ...state, query: action.payload }
     case 'SET_ACTIVE_PAGE':
       return { ...state, activePage: action.payload }
     case 'SET_LANGUAGES':
-      return { ...state, listLanguages: action.payload }
+      return {
+        ...state,
+        listLanguages: action.payload,
+        filteredLanguages: action.payload,
+      }
     case 'SET_LANGUAGE':
       return { ...state, language: action.payload }
     case 'SET_DATE_RANGE':
       return { ...state, dateRange: action.payload }
+    case 'FILTER_LANGUAGE':
+      return {
+        ...state,
+        query: action.payload,
+        filteredLanguages:
+          state.listLanguages &&
+          state.listLanguages.filter(language =>
+            language.value.toLowerCase().includes(action.payload.toLowerCase()),
+          ),
+      }
     default:
       throw new Error('Unexpected Action')
   }

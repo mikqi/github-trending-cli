@@ -3,6 +3,7 @@ import { useInput } from 'ink'
 import { AppProvider } from './AppContext'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import Lists from './components/Lists'
 
 interface IProps {
   name?: string
@@ -17,6 +18,7 @@ const InkBoilerplate: FunctionComponent<IProps> = ({ name = 'Someone' }) => {
   return (
     <AppProvider>
       <Header />
+      <Lists />
       <Footer />
     </AppProvider>
   )

@@ -7,7 +7,7 @@ const Header = () => {
   const { query, dispatch } = useContext(AppContext)
   const handleChange = (val: string) => {
     dispatch({
-      type: 'SET_QUERY',
+      type: 'FILTER_LANGUAGE',
       payload: val,
     })
   }
