@@ -1,8 +1,9 @@
 import React, { createContext, useReducer, FunctionComponent } from 'react'
 
-type DATE_RANGE = 'daily' | 'weekly' | 'monthly'
+export type ACTIVE_PAGE = 'searchLanguage' | 'setDateRange' | 'showResult'
+export type DATE_RANGE = 'daily' | 'weekly' | 'monthly'
 type ACTION =
-  | { type: 'SET_ACTIVE_PAGE'; payload: string }
+  | { type: 'SET_ACTIVE_PAGE'; payload: ACTIVE_PAGE }
   | { type: 'SET_LANGUAGE'; payload: string }
   | { type: 'SET_LANGUAGES'; payload: Choice[] }
   | { type: 'SET_DATE_RANGE'; payload: DATE_RANGE }
@@ -13,9 +14,9 @@ interface Choice {
   value: string
 }
 
-interface AppState {
+export interface AppState {
   query: string
-  activePage: string
+  activePage: ACTIVE_PAGE
   dateRange?: DATE_RANGE
   language?: string
   listLanguages?: Choice[]
@@ -24,7 +25,7 @@ interface AppState {
 
 let initialAppState: AppState = {
   query: '',
-  activePage: '',
+  activePage: 'searchLanguage',
   language: '',
   dateRange: 'daily',
   listLanguages: [],

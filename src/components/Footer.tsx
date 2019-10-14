@@ -3,11 +3,11 @@ import { Box, Text, Color } from 'ink'
 import { AppContext } from '../AppContext'
 
 const Footer = () => {
-  const { query } = useContext(AppContext)
+  const { language } = useContext(AppContext)
   return (
     <Box>
       <Text>
-        This is your query <Color greenBright>{query}</Color>
+        This is your language <Color greenBright>{language}</Color>
       </Text>
     </Box>
   )
