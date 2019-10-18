@@ -17,5 +17,5 @@ const cli = meow(`
     $ inkboilerplate --name=John
     Hello, John. From Ink Boilerplate
 `)
-
+console.clear()
 render(React.createElement(InkBoilerplate, cli.flags))
