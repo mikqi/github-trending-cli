@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Box, Text } from 'ink'
 import SelectInput, { Item } from 'ink-select-input'
-import { AppContext } from '../AppContext'
+import trendingGithub from 'trending-github'
+import { AppContext, DATE_RANGE } from '../AppContext'
 import LANGUAGES from '../languages'
 
 const DATE_RANGE_ITEMS = [
@@ -11,9 +12,14 @@ const DATE_RANGE_ITEMS = [
 ]
 
 const LanguageLists = () => {
-  const { dispatch, filteredLanguages, activePage, language } = useContext(
-    AppContext,
-  )
+  const {
+    dispatch,
+    filteredLanguages,
+    activePage,
+    language,
+    dateRange,
+  } = useContext(AppContext)
+  const [repos, setRepos] = useState([])
 
   useEffect(() => {
     dispatch({
@@ -23,10 +29,15 @@ const LanguageLists = () => {
   }, [LANGUAGES])
 
   useEffect(() => {
-    if (language) {
-      console.log('do magic here')
+    if (language && dateRange) {
+      fetchTrending()
     }
-  }, [language])
+  }, [language, dateRange])
+
+  const fetchTrending = async () => {
+    const data: any = await trendingGithub(dateRange, language)
+    setRepos(data)
+  }
 
   const handleSelectLanguage = (item: Item) => {
     dispatch({
@@ -39,7 +50,16 @@ const LanguageLists = () => {
     })
   }
 
-  const handleSelectRange = (item: Item) => {}
+  const handleSelectRange = (item: Item) => {
+    dispatch({
+      type: 'SET_DATE_RANGE',
+      payload: item.value as DATE_RANGE,
+    })
+    dispatch({
+      type: 'SET_ACTIVE_PAGE',
+      payload: 'showResult',
+    })
+  }
 
   const searchLanguage =
     filteredLanguages && filteredLanguages.length > 0 ? (
@@ -56,7 +76,7 @@ const LanguageLists = () => {
     <SelectInput items={DATE_RANGE_ITEMS} onSelect={handleSelectRange} />
   )
 
-  const showResult = <Text>Result is Here</Text>
+  const showResult = <Text>{JSON.stringify(repos)}</Text>
 
   return (
     <Box>
