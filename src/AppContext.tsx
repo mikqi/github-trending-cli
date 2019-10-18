@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, FunctionComponent } from 'react'
 
 export type ACTIVE_PAGE = 'searchLanguage' | 'setDateRange' | 'showResult'
-export type DATE_RANGE = 'daily' | 'weekly' | 'monthly'
+export type DATE_RANGE = 'daily' | 'weekly' | 'monthly' | ''
 type ACTION =
   | { type: 'SET_ACTIVE_PAGE'; payload: ACTIVE_PAGE }
   | { type: 'SET_LANGUAGE'; payload: string }
@@ -27,7 +27,7 @@ let initialAppState: AppState = {
   query: '',
   activePage: 'searchLanguage',
   language: '',
-  dateRange: 'daily',
+  dateRange: '',
   listLanguages: [],
   filteredLanguages: [],
 }
