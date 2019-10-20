@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Box, Text, Color } from 'ink'
-import SelectInput, { Item, ItemProps } from 'ink-select-input'
+import SelectInput, { Item, ItemProps, IndicatorProps } from 'ink-select-input'
 import trendingGithub from 'trending-github'
+import figures from 'figures'
 import { AppContext, DATE_RANGE } from '../AppContext'
 import LANGUAGES from '../languages'
 
@@ -39,6 +40,12 @@ const CustomItemComponent = (props: ItemProps | CustomItemProps) => {
     <Text>No Item</Text>
   )
 }
+
+const CustomIndicator = ({ isSelected }: IndicatorProps) => (
+  <Box marginRight={1} paddingTop={2}>
+    {isSelected ? <Color cyanBright>{figures.play}</Color> : ' '}
+  </Box>
+)
 
 const DATE_RANGE_ITEMS = [
   { label: 'Daily', value: 'daily' },
@@ -123,6 +130,7 @@ const LanguageLists = () => {
         limit={5}
         items={resultValues}
         itemComponent={CustomItemComponent}
+        indicatorComponent={CustomIndicator}
       />
     )
   }
