@@ -1,9 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Text } from 'ink'
-import SelectInput, { Item } from 'ink-select-input'
+import { Box, Text, Color } from 'ink'
+import SelectInput, { Item, ItemProps } from 'ink-select-input'
 import trendingGithub from 'trending-github'
 import { AppContext, DATE_RANGE } from '../AppContext'
 import LANGUAGES from '../languages'
+
+interface ITrendingResponse {
+  author: string
+  name: string
+  description: string
+  language: string
+  stars: number
+  forks: number
+}
+
+interface CustomItemProps extends Item, ItemProps, ITrendingResponse {}
+
+const CustomItemComponent = (props: ItemProps | CustomItemProps) => {
+  return 'author' in props ? (
+    <Box key={props.key || props.value} flexDirection="column" paddingY={1}>
+      <Box>
+        <Color cyanBright>
+          📘 {props.author}/<Text bold>{props.name}</Text>
+        </Color>
+      </Box>
+      <Box>
+        <Text italic>{props.description}</Text>
+      </Box>
+      <Box>
+        <Box marginRight={2}>
+          <Color yellowBright>●</Color> {props.language}
+        </Box>
+        <Box marginRight={2}>⭐️ {props.stars}</Box>
+        <Box marginRight={2}>📖 {props.forks}</Box>
+      </Box>
+    </Box>
+  ) : (
+    <Text>No Item</Text>
+  )
+}
 
 const DATE_RANGE_ITEMS = [
   { label: 'Daily', value: 'daily' },
@@ -19,7 +54,7 @@ const LanguageLists = () => {
     language,
     dateRange,
   } = useContext(AppContext)
-  const [repos, setRepos] = useState([])
+  const [repos, setRepos] = useState<ITrendingResponse[]>([])
 
   useEffect(() => {
     dispatch({
@@ -76,15 +111,29 @@ const LanguageLists = () => {
     <SelectInput items={DATE_RANGE_ITEMS} onSelect={handleSelectRange} />
   )
 
-  const showResult = <Text>{JSON.stringify(repos)}</Text>
+  const showResult = () => {
+    let resultValues = repos.map((r: ITrendingResponse) => ({
+      ...r,
+      label: r.name,
+      value: r.name,
+    }))
+
+    return (
+      <SelectInput
+        limit={5}
+        items={resultValues}
+        itemComponent={CustomItemComponent}
+      />
+    )
+  }
 
   return (
     <Box>
-      {activePage === 'searchLanguage'
+      {activePage == 'searchLanguage'
         ? searchLanguage
         : activePage === 'setDateRange'
         ? setDateRange
-        : showResult}
+        : showResult()}
     </Box>
   )
 }
