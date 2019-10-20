@@ -26,6 +26,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "figures": "^3.0.0",
     "ink": "^2.4.0",
     "ink-select-input": "^3.1.2",
     "ink-text-input": "^3.2.1",
