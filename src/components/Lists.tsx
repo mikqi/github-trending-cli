@@ -19,7 +19,12 @@ interface CustomItemProps extends Item, ItemProps, ITrendingResponse {}
 
 const CustomItemComponent = (props: ItemProps | CustomItemProps) => {
   return 'author' in props ? (
-    <Box key={props.key || props.value} flexDirection="column" paddingY={1}>
+    <Box
+      paddingLeft={props.isSelected ? 1 : 0}
+      key={props.key || props.value}
+      flexDirection="column"
+      paddingY={1}
+    >
       <Box>
         <Color cyanBright>
           📘 {props.author}/<Text bold>{props.name}</Text>
