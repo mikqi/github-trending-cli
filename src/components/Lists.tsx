@@ -13,6 +13,7 @@ interface ITrendingResponse {
   language: string
   stars: number
   forks: number
+  href: string
 }
 
 interface CustomItemProps extends Item, ItemProps, ITrendingResponse {}
@@ -27,11 +28,11 @@ const CustomItemComponent = (props: ItemProps | CustomItemProps) => {
     >
       <Box>
         <Color cyanBright>
-          📘 {props.author}/<Text bold>{props.name}</Text>
+          📘 {props.author}/<Text bold>{props.name || ''}</Text>
         </Color>
       </Box>
       <Box>
-        <Text italic>{props.description}</Text>
+        <Text italic>{props.description || 'no description'}</Text>
       </Box>
       <Box>
         <Box marginRight={2}>
