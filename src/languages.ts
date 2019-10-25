@@ -2083,16 +2083,4 @@ export default [
     value: 'Zimpl',
     label: 'Zimpl',
   },
-  {
-    value: 'Today',
-    label: 'Today',
-  },
-  {
-    value: 'This week',
-    label: 'This week',
-  },
-  {
-    value: 'This month',
-    label: 'This month',
-  },
 ]

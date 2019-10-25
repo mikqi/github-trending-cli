@@ -1,57 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Text, Color } from 'ink'
-import SelectInput, { Item, ItemProps, IndicatorProps } from 'ink-select-input'
+import { Box, Text } from 'ink'
+import SelectInput, { Item } from 'ink-select-input'
 import trendingGithub from 'trending-github'
-import figures from 'figures'
 import { AppContext, DATE_RANGE } from '../AppContext'
+import CustomItemComponent, { ITrendingResponse } from './CustomItemComponent'
+import CustomItemComponentSimple from './CustomItemComponentSimple'
+import CustomIndicator from './CustomIndicator'
+import CustomIndicatorSimple from './CustomIndicatorSimple'
 import LANGUAGES from '../languages'
-
-interface ITrendingResponse {
-  author: string
-  name: string
-  description: string
-  language: string
-  stars: number
-  forks: number
-  href: string
-}
-
-interface CustomItemProps extends Item, ItemProps, ITrendingResponse {}
-
-const CustomItemComponent = (props: ItemProps | CustomItemProps) => {
-  return 'author' in props ? (
-    <Box
-      paddingLeft={props.isSelected ? 1 : 0}
-      key={props.key || props.value}
-      flexDirection="column"
-      paddingY={1}
-    >
-      <Box>
-        <Color cyanBright>
-          📘 {props.author}/<Text bold>{props.name || ''}</Text>
-        </Color>
-      </Box>
-      <Box>
-        <Text italic>{props.description || 'no description'}</Text>
-      </Box>
-      <Box>
-        <Box marginRight={2}>
-          <Color yellowBright>●</Color> {props.language}
-        </Box>
-        <Box marginRight={2}>⭐️ {props.stars}</Box>
-        <Box marginRight={2}>📖 {props.forks}</Box>
-      </Box>
-    </Box>
-  ) : (
-    <Text>No Item</Text>
-  )
-}
-
-const CustomIndicator = ({ isSelected }: IndicatorProps) => (
-  <Box marginRight={1} paddingTop={2}>
-    {isSelected ? <Color cyanBright>{figures.play}</Color> : ' '}
-  </Box>
-)
 
 const DATE_RANGE_ITEMS = [
   { label: 'Daily', value: 'daily' },
@@ -112,6 +68,8 @@ const LanguageLists = () => {
   const searchLanguage =
     filteredLanguages && filteredLanguages.length > 0 ? (
       <SelectInput
+        indicatorComponent={CustomIndicatorSimple}
+        itemComponent={CustomItemComponentSimple}
         items={filteredLanguages}
         limit={5}
         onSelect={handleSelectLanguage}
@@ -121,7 +79,12 @@ const LanguageLists = () => {
     )
 
   const setDateRange = (
-    <SelectInput items={DATE_RANGE_ITEMS} onSelect={handleSelectRange} />
+    <SelectInput
+      indicatorComponent={CustomIndicatorSimple}
+      itemComponent={CustomItemComponentSimple}
+      items={DATE_RANGE_ITEMS}
+      onSelect={handleSelectRange}
+    />
   )
 
   const showResult = () => {
