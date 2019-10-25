@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Box, Text } from 'ink'
 import SelectInput, { Item } from 'ink-select-input'
 import trendingGithub from 'trending-github'
+import open from 'open'
+
 import { AppContext, DATE_RANGE } from '../AppContext'
 import CustomItemComponent, { ITrendingResponse } from './CustomItemComponent'
 import CustomItemComponentSimple from './CustomItemComponentSimple'
@@ -65,6 +67,10 @@ const LanguageLists = () => {
     })
   }
 
+  const handleSelectResult = (item: Item) => {
+    open(item.value.toString())
+  }
+
   const searchLanguage =
     filteredLanguages && filteredLanguages.length > 0 ? (
       <SelectInput
@@ -91,11 +97,12 @@ const LanguageLists = () => {
     let resultValues = repos.map((r: ITrendingResponse) => ({
       ...r,
       label: r.name,
-      value: r.name,
+      value: r.href,
     }))
 
     return (
       <SelectInput
+        onSelect={handleSelectResult}
         limit={5}
         items={resultValues}
         itemComponent={CustomItemComponent}
